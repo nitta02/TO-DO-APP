@@ -15,9 +15,9 @@ class ToDoLists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(10.0),
       child: Container(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(45.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white,
@@ -36,6 +36,9 @@ class ToDoLists extends StatelessWidget {
               titlee,
               style: TextStyle(
                 fontSize: 17,
+                decoration: isChecked
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
               ),
             ),
           ],
