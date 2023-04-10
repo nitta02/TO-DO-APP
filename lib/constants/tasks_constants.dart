@@ -1,10 +1,10 @@
-List tasksList = [
-  ["Wake up 7:00AM", false],
-  ["Do Exercise", false],
-  ["Go for Varsity", false],
-  ["Do works", false],
-  ["Go for bed 11:30PM", false],
-];
+// List tasksList = [
+//   ["Wake up 7:00AM", false],
+//   ["Do Exercise", false],
+//   ["Go for Varsity", false],
+//   ["Do works", false],
+//   ["Go for bed 11:30PM", false],
+// ];
 
 // const task1 = 'task1';
 // const task2 = 'task2';
