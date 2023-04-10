@@ -13,7 +13,7 @@ class FloatingDialong extends StatelessWidget {
     Key? key,
     required this.onSave,
     required this.onCancel,
-    this.controller,
+    required this.controller,
   }) : super(key: key);
 
   @override

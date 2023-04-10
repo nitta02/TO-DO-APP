@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, unused_field, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
-import 'package:to_do_app/constants/tasks_constants.dart';
+import 'package:to_do_app/data/database.dart';
 import 'package:to_do_app/utils/floating_action.dart';
 import 'package:to_do_app/utils/to_do_lists.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -14,12 +15,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _controller = TextEditingController();
-  //checkbox==================
-  // void checkboxChecked(value, index) {
-  //   setState(() {
-  //     tasksList[index][1] = !tasksList[index][1];
-  //   });
-  // }
+  final _myBox = Hive.box('mybox');
+  ToDoDataBase db = ToDoDataBase();
+  @override
+  void initState() {
+    //=====================1st Time ==========================
+    if (_myBox.get("TODOLIST") == null) {
+      db.initialData();
+    } else {
+      //=================Load Data==================
+      db.loadData();
+    }
+    super.initState();
+  }
+
+  void saveNewTask() {
+    setState(() {
+      db.tasksList.add([_controller.text, false]);
+      _controller.clear();
+    });
+    Navigator.of(context).pop();
+    db.updateDataBase();
+  }
 
   void creatNewTask() {
     showDialog(
@@ -27,16 +44,18 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) {
         return FloatingDialong(
           onCancel: () => Navigator.of(context).pop(),
-          onSave: () {
-            setState(() {
-              tasksList.add([_controller.text, false]);
-              Navigator.of(context).pop();
-            });
-          },
+          onSave: saveNewTask,
           controller: _controller,
         );
       },
     );
+  }
+
+  void deleteTask(int index) {
+    setState(() {
+      db.tasksList.removeAt(index);
+    });
+    db.updateDataBase();
   }
 
   @override
@@ -49,15 +68,17 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
       ),
       body: ListView.builder(
-        itemCount: tasksList.length,
+        itemCount: db.tasksList.length,
         itemBuilder: (context, index) {
           return ToDoLists(
-            titlee: tasksList[index][0],
-            isChecked: tasksList[index][1],
+            deleteFunction: (context) => deleteTask(index),
+            titlee: db.tasksList[index][0],
+            isChecked: db.tasksList[index][1],
             onChanged: (value) {
               setState(() {
-                tasksList[index][1] = !tasksList[index][1];
+                db.tasksList[index][1] = !db.tasksList[index][1];
               });
+              db.updateDataBase();
             },
           );
         },
