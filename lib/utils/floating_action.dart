@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-
 import 'package:to_do_app/widgets/my_button.dart';
 
 class FloatingDialong extends StatelessWidget {
